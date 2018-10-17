@@ -6,7 +6,7 @@ then create problem instances and solve them with calls to the various search
 functions."""
 
 from utils import PriorityQueue, FIFOQueue, Stack, Dict
-from utils import update,euclidean,infinity,print_table,memoize 
+from utils import update,euclidean,infinity,print_table,memoize
 import sys, random
 
 #______________________________________________________________________________
@@ -50,7 +50,7 @@ class Problem(object):
         state2.  If the path does matter, it will consider c and maybe state1
         and action. The default method costs 1 for every step in the path."""
         return c + 1
-    
+
     #Added V3.0
     def value(self, state):
         """For optimization problems, each state has a value.  Hill-climbing
@@ -81,7 +81,7 @@ class Node:
         "List the nodes reachable in one step from this node."
         return [self.child_node(problem, action)
                 for action in problem.actions(self.state)]
-        
+
     def child_node(self, problem, action):
         next = problem.result(self.state, action)
         return Node(next, self, action,
@@ -137,7 +137,7 @@ def depth_first_search(problem):
 def breadth_first_search(problem):
     "Search the shallowest nodes in the search tree first."
     return graph_search(problem, FIFOQueue())
-   
+
 def depth_limited_search(problem, limit=50):
     def recursive_dls(node, problem, limit):
         if problem.goal_test(node.state):
@@ -152,7 +152,7 @@ def depth_limited_search(problem, limit=50):
                     cutoff_occurred = True
                 elif result is not None:
                     return result
-            if cutoff_occurred:               
+            if cutoff_occurred:
                 return 'cutoff'
             else:
                 return None
@@ -202,11 +202,11 @@ def best_first_graph_search(problem, f):
 
 def uniform_cost_search(problem):
     return best_first_graph_search(problem, lambda node: node.path_cost)
-    
+
 def greedy_best_first_graph_search(problem, h=None):
     h = memoize(h or problem.h, 'h')
     return best_first_graph_search(problem, lambda n: h(n))
-	
+
 def astar_search(problem, h=None):
     """A* search is best-first graph search with f(n) = g(n)+h(n).
     You need to specify the h function when you call astar_search, or
@@ -302,7 +302,7 @@ class InstrumentedProblem(Problem):
     """Delegates to a problem, and keeps statistics."""
 
     def __init__(self, problem):
-        #succs - nodes expanded 
+        #succs - nodes expanded
         #states - nodes generated
         #goal_tests - number of times goal is tested
         self.problem = problem
@@ -327,7 +327,7 @@ class InstrumentedProblem(Problem):
     def path_cost(self, c, state1, action, state2):
         return self.problem.path_cost(c, state1, action, state2)
 
- 
+
     def __getattr__(self, attr):
         return getattr(self.problem, attr)
 

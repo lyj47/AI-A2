@@ -48,19 +48,19 @@ def simpleGraphCreation():
             (2,2): {(3,2): 1},
             (3,1): {(3,2): 1},
           }, directed=False)
-    
+
     print(g.get((2,2)))
     print(g.nodes())
     g.locations = Dict()
     for i in g.nodes():
-        g.locations.update({i: i}) 
+        g.locations.update({i: i})
     print (euclidean(g.locations[(1,1)], g.locations[(3,2)]))
-    
- #______________________________________________________________________________   
+
+ #______________________________________________________________________________
 def main():
     '''
     #Explicitly create an instrumented problem
-    ab = InstrumentedProblem(GraphProblem('A','B',romania))  
+    ab = InstrumentedProblem(GraphProblem('A','B',romania))
     goal = uniform_cost_search(ab)
     print("Path = ",goal.path())
     print("Cost = ",goal.path_cost)
@@ -68,29 +68,16 @@ def main():
     ab.final_cost = goal.path_cost
     print(ab)
     '''
-    
-    #To change h dynamically, provide a selection parameter in the constructor of your 
+
+    #To change h dynamically, provide a selection parameter in the constructor of your
     #derived class, then use that parameter to choose the version of h in your
     #overriden version of h in the derived class
-    #You might need to create multiple versions of the problem, one for each value of the parameter   
-    
+    #You might need to create multiple versions of the problem, one for each value of the parameter
+
     compare_searchers(problems=[GraphProblem('A', 'B', romania),GraphProblem('A', 'N', romania)],
-                header=['Algorithm', 'Romania(A, B)','Romania(A, N)'], 
-            searchers=[uniform_cost_search, greedy_best_first_graph_search, astar_search])  
-    
+                header=['Algorithm', 'Romania(A, B)','Romania(A, N)'],
+            searchers=[uniform_cost_search, greedy_best_first_graph_search, astar_search])
+
     print()
-    	
+
 main()
-
-
-
-
-
-
-
-
-
-
-
-
-
