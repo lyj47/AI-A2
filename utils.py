@@ -1,5 +1,5 @@
 """
-V2.0 
+V2.0
 Provides some widely useful utilities -Based on AIMA code
 We will incrementally build this through the course...
 """
@@ -30,7 +30,7 @@ def update(x, **entries):
 
 #______________________________________________________________________________
 # Misc Functions
-def euclidean(a, b): 
+def euclidean(a, b):
     '''The Euclidean distance between two (x, y) points.'''
     return math.hypot((a[0] - b[0]), (a[1] - b[1]))
 
@@ -46,7 +46,7 @@ def print_table(table, header=None, key=None):
     alignments =[]
     for row in table:
         for (size,x) in zip(sizes,row):
-            alignments.append(size) 
+            alignments.append(size)
     for row in table:
         i=0
         for s in row:
@@ -159,7 +159,7 @@ def isin(elt, seq):
     return False
 
 #______________________________________________________________________________
-# Statistical Functions    
+# Statistical Functions
 def probability(p):
     "Return true with probability p."
     return p > random.uniform(0.0, 1.0)
@@ -175,7 +175,7 @@ def weighted_sample_with_replacement(seq, weights, n):
 def weighted_sampler(seq, weights):
     "Return a random-sample function that picks from seq weighted by weights."
     totals = []
- 
+
     for w in weights:
         totals.append(w + totals[-1] if totals else w)
     return lambda: seq[bisect.bisect(totals, random.uniform(0, totals[-1]))]
