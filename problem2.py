@@ -1,6 +1,7 @@
 from search import Problem
 from utils import probability, argmax, weighted_sample_with_replacement
 import random
+import datetime
 
 #______________________________________________________________________________
 #Genetic algorithms
@@ -35,10 +36,10 @@ def genetic_algorithm(population, fitness_fn, ngen=1000, pmut=0.1):
         if currentHigh > highest:
             highest = currentHigh
             highestEvolved = currentEvolved
-    return highestEvolved
+    # return highestEvolved
 
     #Pure GA might return this instead
-    #return argmax(population, fitness_fn)
+    return argmax(population, fitness_fn)
 
 class GAState:
     "Abstract class for individuals in a genetic search."
@@ -195,14 +196,33 @@ def main():
     # print("Goal = ",goal)
     # print()
 
+    # tracks the instances in a csv
+    instances_string = 'Instance, '
+    #tracks the results in a csv
+    results_string = 'Highest Result, '
+    output_file = open('NQueen_results.txt', 'w+')
+
+    start_time = datetime.datetime.now()
+
     N = 16
-    for instances in range(100):
+    RUNS = 100
+    for instance in range(RUNS):
         random_state = []
         for i in range(0, N):
             random_state.append(random.randrange(N))
 
         nq = NQueenProblem(N, NQueenState(random_state))
-        goal = genetic_search(nq, ExampleProblem.value, ngen=250, pmut=0.1)
-        print("Goal = ",goal)
+        goal = genetic_search(nq, NQueenProblem.value, ngen=50, pmut=0.15)
+        # print('Goal = ' + str(goal)) + ' = ' + str(nq.value(goal)))
+        if instance == RUNS-1:
+            instances_string = instances_string + str(instance+1)
+            results_string = results_string + str(nq.value(goal))
+        else:
+            instances_string = instances_string + str(instance+1) + ', '
+            results_string = results_string + str(nq.value(goal)) + ', '
+
+    output_file.write(instances_string + '\n' + results_string)
+    output_file.close()
+    print("Done! Time: " + str(datetime.datetime.now() - start_time))
 
 main()
