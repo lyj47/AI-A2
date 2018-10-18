@@ -76,13 +76,16 @@ class Problem1:
                     # if the bottom is free, but not the right and the bottom isn't = 0, make a path.
                     elif graph_arr[row][col+1] == 0 and graph_arr[row+1][col] != 0 and row+1 < len(graph_arr):
                         dict.update({(row, col): {
-                                            (row, col): int(graph_arr[row+1][col])
+                                            (row+1, col): int(graph_arr[row+1][col])
                                            }})
                     # if the right is free, but not the bottom and the right isn't = 0, make a path.
                     elif graph_arr[row+1][col] == 0 and graph_arr[row][col+1] != 0 and col+1 < len(graph_arr[row]):
                         dict.update({(row, col): {
-                                            (row, col): int(graph_arr[row][col+1])
+                                            (row, col+1): int(graph_arr[row][col+1])
                                            }})
+                    # you reached a point without an right or bottom opening
+                    else:
+                        dict.update({(row, col): {}})
                 # self.manhattan_distances.update({(row, col): (row, col)}) # self.get_manhattan_distance((row, col))
         # graph created
         self.graph = Graph(dict, directed=False)
@@ -93,28 +96,37 @@ class Problem1:
 
         map.close()
 
+    # sets the file of the graph, then creates it
     def set_graph_file(self, graph_file):
-        if graph_file == None:
-            print('you must specify a file in the set_graph_file function')
-        else:
+        if graph_file != None:
             self.graph_file = graph_file
+            self.create_graph(self.graph_file)
 
+    # calculates the manhattan distance from any node to the goal node
     def get_manhattan_distance(self, coordinates):
         return (math.fabs(self.end_coordinates[0] - coordinates[0]) +
                     math.fabs(self.end_coordinates[1] - coordinates[1]))
 
 def main():
 
-    problem = Problem1('L3.txt')
+    # initialize the problems
+    problem_1 = Problem1('L1.txt')
+    problem_2 = Problem1('L2.txt')
+    problem_3 = Problem1('L3.txt')
 
-    problem.create_graph()
+    # create the graphs based on the text file
+    problem_1.create_graph()
+    problem_2.create_graph()
+    problem_3.create_graph()
 
-    problem = InstrumentedProblem(GraphProblem(problem.start_coordinates, problem.end_coordinates, problem.graph))
-    goal = uniform_cost_search(problem)
-    print("Path = ",goal.path())
-    print("Cost = ",goal.path_cost)
-    print("Expanded/Goal Tests/Generated/Cost/Goal Found")
-    problem.final_cost = goal.path_cost
-    print(problem)
+    # create the actual problem to search
+    problem_1 = InstrumentedProblem(GraphProblem(problem_1.start_coordinates, problem_1.end_coordinates, problem_1.graph))
+    problem_2 = InstrumentedProblem(GraphProblem(problem_2.start_coordinates, problem_2.end_coordinates, problem_2.graph))
+    problem_3 = InstrumentedProblem(GraphProblem(problem_3.start_coordinates, problem_3.end_coordinates, problem_3.graph))
+
+    #compare the search algorithms on all problems
+    compare_searchers(problems=[problem_1, problem_2, problem_3],
+                        header=['Algorithm', 'L1 ((1,1), (14,19))','L2 ((1,1), (12,11))', 'L3 ((1,1), (13,4))'],
+                        searchers=[uniform_cost_search, greedy_best_first_graph_search, astar_search])
 
 main()

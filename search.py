@@ -333,7 +333,7 @@ class InstrumentedProblem(Problem):
 
     def __repr__(self):
         return '<%4d/%4d/%4d/%4d/%s>' % (self.succs, self.goal_tests,
-                                     self.states, self.final_cost, str(self.found)[:4])
+                                     self.states, self.final_cost, str(self.found)[:8])
 
 
 def name(obj):
